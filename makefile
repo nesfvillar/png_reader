@@ -1,17 +1,15 @@
 CC = gcc
-FLAGS = -Wextra  -Wall
+FLAGS = -Wextra  -Wall -std=c99
+SRC = src/main.c
 
+.PHONY: all run clean
 all: bin/main
 
-bin/main: src/main.c
-	gcc $(FLAGS) -o bin/main src/main.c
-
-.PHONY: run clean
 run: bin/main
 	./bin/main
 
 clean:
-	rm bin/main
+	- rm bin/*
 
-
-
+bin/main: $(SRC)
+	$(CC) $(FLAGS) -o $@ $^
