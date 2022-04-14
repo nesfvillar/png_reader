@@ -1,15 +1,22 @@
 CC = gcc
 FLAGS = -Wextra  -Wall -std=c99
-SRC = src/main.c
+EXC = bin/png_reader
+SRC = src/png_reader.c
+OBJS = lib/chunk.o
 
 .PHONY: all run clean
-all: bin/main
+all: ${EXC}
 
-run: bin/main
-	./bin/main
+run: ${EXC}
+	${EXC}
 
 clean:
-	- rm bin/*
+	@- rm bin/* lib/*
 
-bin/main: $(SRC)
+${EXC}: $(SRC) $(OBJS)
+	@ mkdir -p bin/
 	$(CC) $(FLAGS) -o $@ $^
+
+lib/%.o: src/%.c src/%.h
+	@ mkdir -p lib/
+	$(CC) $(FLAGS) -c -o $@ $<
