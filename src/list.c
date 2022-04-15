@@ -1,7 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 
-list_t *list_init(chunk_t *chunk) {
+list_t *list_init(chunk_t chunk) {
   list_t *list = malloc(sizeof(list_t));
   list->value = chunk;
   list->next = list->prev = NULL;
@@ -15,12 +15,11 @@ void list_dest(list_t *list) {
   if (list->next != NULL) {
     list_dest(list->next);
   }
-  freeChunk(list->value);
-  free(list);
+  list_node_dest(list);
 }
 
 void list_node_dest(list_t *node) {
-  freeChunk(node->value);
+  freeChunk(&node->value);
   free(node);
 }
 
@@ -42,20 +41,20 @@ list_t *list_head(list_t *list) {
 
 list_t *list_tail(list_t *list) {
   if (list->next == NULL) {
-    return list->next;
+    return list;
   } else {
     return list_tail(list->next);
   }
 }
 
-void list_append(list_t *list, chunk_t *chunk) {
+void list_append(list_t *list, chunk_t chunk) {
   list_t *new_node = list_init(chunk);
   list_t *tail = list_tail(list);
   new_node->prev = tail;
   tail->next = new_node;
 }
 
-void list_prepend(list_t *list, chunk_t *chunk) {
+void list_prepend(list_t *list, chunk_t chunk) {
   list_t *new_node = list_init(chunk);
   list_t *head = list_head(list);
   new_node->next = head;

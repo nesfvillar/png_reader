@@ -1,3 +1,5 @@
+#ifndef CHUNK_H
+#define CHUNK_H
 #include <stdint.h>
 #include <stdio.h>
 
@@ -18,3 +20,4 @@ void printChunk(const chunk_t *chunk);
 int arrToInt(uint8_t *, size_t);
 
 void freeChunk(chunk_t *);
+#endif
