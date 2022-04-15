@@ -10,9 +10,11 @@ list_t *list_init(chunk_t chunk) {
 
 void list_dest(list_t *list) {
   if (list->prev != NULL) {
+    list->prev->next = NULL;
     list_dest(list->prev);
   }
   if (list->next != NULL) {
+    list->next->prev = NULL;
     list_dest(list->next);
   }
   list_node_dest(list);
@@ -33,7 +35,7 @@ void list_node_remove(list_t *node) {
 
 list_t *list_head(list_t *list) {
   if (list->prev == NULL) {
-    return list->prev;
+    return list;
   } else {
     return list_head(list->prev);
   }
