@@ -20,20 +20,26 @@ int main(int argc, char **argv) {
   uint8_t header[8];
   readChunkPart(header, file, sizeof(header));
 
-  for (size_t i = 0; i < sizeof(header); i++) {
-    printf("%X ", header[i]);
-  }
-  printf("\n\n");
+  //  for (size_t i = 0; i < sizeof(header); i++) {
+  //    printf("%X ", header[i]);
+  //  }
+  //  printf("\n\n");
 
   chunk_t chunk;
+  chunk = readChunk(file);
+  list_t *list = list_init();
+  list_append(list, chunk);
+
   while (chunk.int_length > 0) {
     chunk = readChunk(file);
+    list_append(list, chunk);
+  }
+  fclose(file);
 
-    printChunk(&chunk);
-
-    freeChunk(&chunk);
+  for (list_t *node = list->next; node != NULL; node = node->next) {
+    printChunk(&node->value);
   }
 
-  fclose(file);
+  list_dest(list);
   return 0;
 }
