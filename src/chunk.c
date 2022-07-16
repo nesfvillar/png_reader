@@ -32,18 +32,21 @@ void readChunkPart(uint8_t *part, FILE *file, size_t size) {
 }
 
 void printChunk(const chunk_t *chunk) {
+  printf("Length: 0x");
   for (size_t i = 0; i < sizeof(chunk->length); i++) {
-    printf("%X ", chunk->length[i]);
+    printf("%X", chunk->length[i]);
   }
   printf("\n");
 
+  printf("Type: ");
   for (size_t i = 0; i < sizeof(chunk->type); i++) {
-    printf("%c ", chunk->type[i]);
+    printf("%c", chunk->type[i]);
   }
   printf("\n");
 
+  printf("CRC: ");
   for (size_t i = 0; i < sizeof(chunk->crc); i++) {
-    printf("%X ", chunk->crc[i]);
+    printf("%X", chunk->crc[i]);
   }
   printf("\n\n");
 }
