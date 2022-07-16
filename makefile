@@ -1,8 +1,8 @@
 CC = gcc
 FLAGS = -Wextra  -Wall -std=c99
 EXC = bin/png_reader
-SRC = src/png_reader.c src/dynArr.c
-OBJS = lib/chunk.o
+SRC = src/png_reader.c
+OBJS = lib/chunk.o lib/dynArr.o
 
 .PHONY: all run clean
 all: ${EXC}
