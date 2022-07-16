@@ -1,8 +1,9 @@
 #include "chunk.h"
 #include "dynArr.h"
+#include "png_reader.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
 
 int main(int argc, char **argv) {
   if (argc != 2) {
@@ -11,6 +12,16 @@ int main(int argc, char **argv) {
   }
   char *file_name = argv[1];
 
+  DynArr dynArr = png_read(file_name);
+
+  png_print(&dynArr);
+  png_clean(&dynArr);
+
+  return 0;
+}
+
+
+DynArr png_read(char *file_name) {
   FILE *file = fopen(file_name, "r");
   if (file == NULL) {
     perror("ERROR could not open file");
@@ -32,10 +43,15 @@ int main(int argc, char **argv) {
   }
   fclose(file);
 
-  for (size_t i = 0; i < dynArr.top; i++) {
-    printChunk(&dynArr.data[i]);
-  }
+  return dynArr;
+}
 
-  dynArr_clear(&dynArr);
-  return 0;
+void png_print(DynArr *dynArr) {
+  for (size_t i = 0; i < dynArr->top; i++) {
+    printChunk(&dynArr->data[i]);
+  }
+}
+
+void png_clean(DynArr *dynArr) {
+  dynArr_clear(dynArr);
 }
