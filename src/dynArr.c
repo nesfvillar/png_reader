@@ -1,4 +1,5 @@
 #include "dynArr.h"
+#include "chunk.h"
 #include "stdlib.h"
 
 void dynArr_init(DynArr *dynArr) {
@@ -20,7 +21,7 @@ chunk_t dynArr_pop(DynArr *dynArr) {
         perror("ERROR tried to pop an empty stack");
         exit(1);
     }
-    return dynArr->data[dynArr->top--];
+    return dynArr->data[--dynArr->top];
 }
 
 void dynArr_resize(DynArr *dynArr, size_t new_size) {
@@ -28,8 +29,8 @@ void dynArr_resize(DynArr *dynArr, size_t new_size) {
     chunk_t *new_data = malloc(sizeof(chunk_t) * new_size);
     for (size_t i = 0; i < dynArr->top; i++) {
         new_data[i] = dynArr->data[i];
-        // free(dynArr->data);
     }
+    free(dynArr->data);
     dynArr->data = new_data;
 }
 
