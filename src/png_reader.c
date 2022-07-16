@@ -6,16 +6,19 @@
 
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
+  if (argc == 1) {
     fprintf(stderr, "Usage: %s IMAGE.png\n", argv[0]);
     exit(1);
   }
-  char *file_name = argv[1];
 
-  DynArr dynArr = png_read(file_name);
+  for (int i = 1; i < argc; i++) {
+    char *file_name = argv[i];
 
-  png_print(&dynArr);
-  png_clean(&dynArr);
+      DynArr dynArr = png_read(file_name);
+
+    png_print(&dynArr);
+    png_clean(&dynArr);
+  }
 
   return 0;
 }
