@@ -1,5 +1,5 @@
 #include "chunk.h"
-#include "list.h"
+#include "dynArr.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,26 +20,22 @@ int main(int argc, char **argv) {
   uint8_t header[8];
   readChunkPart(header, file, sizeof(header));
 
-  //  for (size_t i = 0; i < sizeof(header); i++) {
-  //    printf("%X ", header[i]);
-  //  }
-  //  printf("\n\n");
-
   chunk_t chunk;
   chunk = readChunk(file);
-  list_t *list = list_init();
-  list_append(list, chunk);
+  DynArr dynArr;
+  dynArr_init(&dynArr);
+  dynArr_push(&dynArr, chunk);
 
   while (chunk.int_length > 0) {
     chunk = readChunk(file);
-    list_append(list, chunk);
+    dynArr_push(&dynArr, chunk);
   }
   fclose(file);
 
-  for (list_t *node = list->next; node != NULL; node = node->next) {
-    printChunk(&node->value);
+  for (size_t i = 0; i < dynArr.top; i++) {
+    printChunk(&dynArr.data[i]);
   }
 
-  list_dest(list);
+  dynArr_clear(&dynArr);
   return 0;
 }
